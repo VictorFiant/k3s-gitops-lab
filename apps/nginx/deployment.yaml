@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:latest
+        image: fiantvictor/devops-nginx:latest
+
         ports:
         - containerPort: 80
 
