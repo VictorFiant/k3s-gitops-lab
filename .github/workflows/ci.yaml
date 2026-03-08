@@ -21,9 +21,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: |
+        run: 
           docker build -t ${{ secrets.DOCKER_USERNAME }}/devops-nginx:latest ./app
 
       - name: Push Docker image
-        run: |
+        run: 
           docker push ${{ secrets.DOCKER_USERNAME }}/devops-nginx:latest
