@@ -7,12 +7,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
 
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Login to DockerHub
@@ -21,9 +20,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./app
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/devops-nginx:latest
+      - name: Build Docker image
+        run: 
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/devops-nginx:latest ./app
+
+      - name: Push Docker image
+        run: 
+          docker push ${{ secrets.DOCKER_USERNAME }}/devops-nginx:latest
