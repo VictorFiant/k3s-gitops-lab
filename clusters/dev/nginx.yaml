@@ -7,11 +7,11 @@ spec:
   project: default
   source:
     repoURL: https://github.com/VictorFiant/k3s-gitops-lab.git
-    targetRevision: HEAD
+    targetRevision: main
     path: apps/nginx
   destination:
     server: https://kubernetes.default.svc
-    namespace: nginx
+    namespace: nginx-helm
   syncPolicy:
     automated:
       prune: true
