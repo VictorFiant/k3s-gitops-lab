@@ -4,6 +4,7 @@ metadata:
   name: nginx-ingress
   namespace: default
 spec:
+  ingressClassName: traefik
   rules:
   - host: nginx.local
     http:
@@ -12,6 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: nginx
+            name: nginx-service
             port:
               number: 80
