@@ -1,3 +1,8 @@
+![Kubernetes](https://img.shields.io/badge/Kubernetes-K3s-blue)
+![GitOps](https://img.shields.io/badge/GitOps-ArgoCD-orange)
+![Helm](https://img.shields.io/badge/Helm-Charts-blue)
+![CI](https://img.shields.io/badge/CI-GitHub%20Actions-black)
+
 # K3s GitOps Lab
 
 ## Overview
@@ -175,5 +180,5 @@ Possible improvements include:
 
 # Author
 
-DevOps / Cloud Infrastructure 
+DevOps / Cloud Infrastructure
 Victor Fiant
