@@ -14,39 +14,39 @@ NC='\033[0m'
 pass() { echo -e "${GREEN}[OK]${NC} $1"; }
 fail() { echo -e "${RED}[FAIL]${NC} $1"; exit 1; }
 
+check() {
+  if eval "$1" >/dev/null 2>&1; then
+    pass "$2"
+  else
+    fail "$3"
+  fi
+}
+
 echo "================================================"
 echo " K3s GitOps Lab - Pre-flight Check"
 echo "================================================"
 
-# Check required tools
 echo ""
 echo "Checking required tools..."
+check "command -v kubectl"   "kubectl found"   "kubectl not found"
+check "command -v helm"      "helm found"      "helm not found"
+check "command -v terraform" "terraform found" "terraform not found"
+check "command -v git"       "git found"       "git not found"
+check "command -v docker"    "docker found"    "docker not found"
 
-command -v kubectl  >/dev/null 2>&1 && pass "kubectl found"   || fail "kubectl not found"
-command -v helm     >/dev/null 2>&1 && pass "helm found"      || fail "helm not found"
-command -v terraform >/dev/null 2>&1 && pass "terraform found" || fail "terraform not found"
-command -v git      >/dev/null 2>&1 && pass "git found"       || fail "git not found"
-command -v docker   >/dev/null 2>&1 && pass "docker found"    || fail "docker not found"
-
-# Check kubectl can reach the cluster
 echo ""
 echo "Checking cluster connectivity..."
+check "kubectl cluster-info" "cluster reachable" "cannot reach cluster"
 
-kubectl cluster-info >/dev/null 2>&1 && pass "cluster reachable" || fail "cannot reach cluster"
-
-# Check ArgoCD is running
 echo ""
 echo "Checking ArgoCD..."
+check "kubectl get namespace argocd" "argocd namespace exists" "argocd namespace not found"
+check "kubectl get pods -n argocd --field-selector=status.phase=Running --no-headers | grep -q ." "argocd pods running" "no argocd pods running"
 
-kubectl get namespace argocd >/dev/null 2>&1 && pass "argocd namespace exists" || fail "argocd namespace not found"
-kubectl get pods -n argocd --field-selector=status.phase=Running --no-headers | grep -q "." && pass "argocd pods running" || fail "no argocd pods running"
-
-# Check monitoring namespace
 echo ""
 echo "Checking observability stack..."
-
-kubectl get namespace monitoring >/dev/null 2>&1 && pass "monitoring namespace exists" || fail "monitoring namespace not found"
-kubectl get pods -n monitoring --field-selector=status.phase=Running --no-headers | grep -q "." && pass "monitoring pods running" || fail "no monitoring pods running"
+check "kubectl get namespace monitoring" "monitoring namespace exists" "monitoring namespace not found"
+check "kubectl get pods -n monitoring --field-selector=status.phase=Running --no-headers | grep -q ." "monitoring pods running" "no monitoring pods running"
 
 echo ""
 echo "================================================"
